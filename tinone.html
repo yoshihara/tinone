@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="angular-1.2.9.min.js"></script>
+    <script type="text/javascript" src="jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="tinone.js"></script>
+
+    <link rel="stylesheet" href="bootstrap-3.1.1.min.css">
+    <link rel="stylesheet" href="tinone.css">
+
+    <title>Task list</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Task list</h1>
+      <div class="row" ng-controller="mainCtrl">
+
+        <div>
+          <p>Done tasks: {{getDoneCount()}} / {{tasks.length}}</p>
+          <a class="btn btn-info" href="./done_tasks.html" target="_blank">Show Done tasks</a>
+          <a href ="#" class="text-danger" ng-click="deleteDone()">Delete Done tasks</a>
+        </div>
+
+        </p>
+
+        <table class="table table-condensed col-md-12">
+          <thead>
+            <tr>
+              <th class="col-md-1">done</th>
+              <th class="col-md-6">body</th>
+              <th class="col-md-1"></th>
+              <th class="col-md-1"></th>
+              <th class="col-md-1">status</th>
+              <th class="col-md-1">elapsed(min)</th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="task in tasks track by $index" class={{task.statusClass()}}>
+              <td>
+                <input type="checkbox" ng-model="task.done" ng-click="doneTask($index)"/>
+              </td>
+              <td>
+                <span class="body">{{task.body}}</span>
+              </td>
+              <td>
+                <button class="start btn btn-primary start-{{task.done}}" ng-click="startClock($index)">start</button>
+              </td>
+              <td>
+                <button class="end btn btn-warning end-{{task.done}}" ng-click="endClock($index)">end</button>
+              </td>
+              <td>
+                <span class="status text-info">{{task.clockStatus}}</span>
+              </td>
+              <td>
+                <span class="elapsed text-info">{{task.elapsed}}</span>
+              </td>
+              <td>
+                <a href="#" class="text-danger" ng-click="deleteTask($index)">[x]</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <form ng-submit="addNew()">
+          <input type="text" ng-model="newTaskBody">
+          <input type="submit" value="add">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

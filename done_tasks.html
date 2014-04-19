@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="angular-1.2.9.min.js"></script>
+    <script type="text/javascript" src="jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="tinone.js"></script>
+
+    <link rel="stylesheet" href="bootstrap-3.1.1.min.css">
+    <link rel="stylesheet" href="tinone.css">
+
+    <title>Done tasks</title>
+  </head>
+
+  <body>
+    <div class="container" ng-controller="mainCtrl">
+      <div class="row">
+        <h1>Done Tasks</h1>
+        <table class="table table-condensed col-md-12">
+          <thead>
+            <tr>
+              <th class="col-md-2">Date</th>
+              <th class="col-md-7">body</th>
+              <th class="col-md-3">elapsed(min)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr ng-repeat="task in getDoneTasks() track by $index">
+              <td>{{doneDate(task)}}</td>
+              <td><span class="body">{{task.body}}</span></td>
+              <td><span class="elapsed text-info">{{task.elapsed}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <form role="form">
+          <div class="form-group">
+            <label for="CSV">CSV</label>
+            <textarea class="form-control" rows="10">{{exportCSV()}}</textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
