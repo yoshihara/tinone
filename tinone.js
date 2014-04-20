@@ -105,35 +105,3 @@
     return csv;
   };
 };
-
-
-// (function() {
-//     if (typeof(Storage) === "undefined") {
-//  alert("Web Strage Not Supported");
-//     } else {
-//  var ls = localStorage;
-//  // ls.setItem('name', 'taguchi');
-//  // console.log(ls.getItem("name"));
-//  // ls.removeItem('taguchi');
-//  // ls.clear();
-//  // s.length;　括弧いらない
-//  // s.key(i), s.getItem(s.key(i))
-
-//  var user = {
-//      name: 'taguchi',
-//      score: 80
-//  };
-
-//  // ls.setItem('user', JSON.stringify(user));
-//  // console.dir(JSON.parse(ls.getItem('user')))
-
-//  window.addEventListener('storage', function(e) {
-//      // e.key
-//      // e.oldValue, e.newValue
-//      // e.storageArea
-//      // e.url
-//      alert("aaa");
-//      console.log(e.key + ":" + e.oldValue + "→" + e.newValue);
-//  });
-//     }
-// })();
