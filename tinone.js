@@ -7,34 +7,40 @@
   this.elapsed = 0;
 }
 
+function taskStorage() {
+}
+
+taskStorage.initialize = function(scope) {
+  this.storage = localStorage;
+  this.tasks = [];
+  if(!this.storage.getItem("items")) {
+    this.storage.setItem("items", JSON.stringify([]));
+  } else {
+    var tasks = JSON.parse(this.storage.getItem("items"));
+    this.tasks = tasks;
+  }
+  return this.tasks;
+};
+
+taskStorage.sync = function(scope) {
+  this.tasks = scope.tasks;
+  this.storage.setItem("items", JSON.stringify(this.tasks));
+};
+
 var mainCtrl = function($scope, $http) {
-
-  var ls = localStorage;
-
-  var syncFromLocalStorage = function() {
-    var tasks = JSON.parse(ls.getItem("items"));
-    $scope.tasks = tasks;
-  };
-
-  var syncToLocalStorage = function() {
-    ls.setItem("items", JSON.stringify($scope.tasks));
-  };
-
-  $scope.tasks = [];
-  if(ls.getItem("items") == null) ls.setItem("items", JSON.stringify([]));
-  syncFromLocalStorage();
+  $scope.tasks = taskStorage.initialize($scope);
 
   $scope.addNew = function() {
     var newTask = new Task($scope.newTaskBody);
     $scope.tasks.push(newTask);
-    syncToLocalStorage();
+    taskStorage.sync($scope);
     $scope.newTaskBody = "";
   };
 
   $scope.startClock = function(index) {
     $scope.tasks[index].startTime = Date.now();
     $scope.tasks[index].clockStatus = "計測中...";
-    syncToLocalStorage();
+    taskStorage.sync($scope);
   };
 
   $scope.endClock = function(index) {
@@ -43,7 +49,7 @@ var mainCtrl = function($scope, $http) {
     if(task.elapsed == undefined) task.elapsed = 0;
     task.elapsed += (task.endTime - task.startTime) / 1000 / 60;
     task.clockStatus = "";
-    syncToLocalStorage();
+    taskStorage.sync($scope);
   };
 
   $scope.doneTask = function(index) {
@@ -55,13 +61,13 @@ var mainCtrl = function($scope, $http) {
     } else {
         task.clockStatus = "";
     }
-    syncToLocalStorage();
+    taskStorage.sync($scope);
   };
 
   $scope.deleteTask = function(index) {
     if(confirm("削除しますか？")) {
       $scope.tasks.splice(index,1);
-      syncToLocalStorage();
+      taskStorage.sync($scope);
     }
   };
 
@@ -80,7 +86,7 @@ var mainCtrl = function($scope, $http) {
       angular.forEach(oldTasks, function(task) {
         if (!task.done) $scope.tasks.push(task);
       });
-      syncToLocalStorage();
+      taskStorage.sync($scope);
     };
   };
 
