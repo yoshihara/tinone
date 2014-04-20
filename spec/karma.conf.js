@@ -15,6 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      "angular-1.2.9.min.js",
+      "spec/angular-mocks.js",
       "tinone.js",
       "spec/tinone.spec.js"
     ],
