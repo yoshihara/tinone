@@ -27,7 +27,8 @@ taskStorage.sync = function(scope) {
   this.storage.setItem("items", JSON.stringify(this.tasks));
 };
 
-var mainCtrl = function($scope, $http) {
+var tinoneApp = angular.module('tinoneApp', []);
+tinoneApp.controller('mainCtrl', function ($scope) {
   $scope.tasks = taskStorage.initialize($scope);
 
   $scope.addNew = function() {
@@ -113,4 +114,4 @@ var mainCtrl = function($scope, $http) {
     });
     return csv;
   };
-};
+});
