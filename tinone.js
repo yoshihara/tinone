@@ -1,4 +1,14 @@
-﻿var mainCtrl = function($scope, $http) {
+﻿function Task(body) {
+  this.body = body;
+  this.done = false;
+  this.startTime = undefined;
+  this.endTime = undefined;
+  this.clockStatus = "";
+  this.elapsed = 0;
+}
+
+var mainCtrl = function($scope, $http) {
+
   var ls = localStorage;
 
   var syncFromLocalStorage = function() {
@@ -15,14 +25,7 @@
   syncFromLocalStorage();
 
   $scope.addNew = function() {
-    var newTask = {
-      "body":$scope.newTaskBody,
-      "done":false,
-      "startTime":undefined,
-      "endTime":undefined,
-      "clockStatus":"",
-      "elapsed":0
-    };
+    var newTask = new Task($scope.newTaskBody);
     $scope.tasks.push(newTask);
     syncToLocalStorage();
     $scope.newTaskBody = "";
