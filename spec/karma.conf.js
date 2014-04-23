@@ -17,7 +17,7 @@ module.exports = function(config) {
     files: [
       "lib/angular-1.2.9.min.js",
       "spec/angular-mocks.js",
-      "tinone.js",
+      "js/tinone.js",
       "spec/tinone.spec.js"
     ],
 
