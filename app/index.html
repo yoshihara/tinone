@@ -45,8 +45,8 @@
                 <span class="body">{{task.body}}</span>
               </td>
               <td>
-                <button class="start btn btn-primary start-{{task.done}}" ng-click="startClock($index)" ng-class="{on:task.clockStatus}">start</button>
-                <button class="suspend btn btn-warning suspend-{{task.done}}" ng-click="endClock($index)" ng-class="{on:!task.clockStatus}">suspend</button>
+                <button class="start btn btn-primary start-{{task.done}}" ng-click="startClock($index)" ng-class="{on:task.clockStatus == '計測中...'}">start</button>
+                <button class="suspend btn btn-warning suspend-{{task.done}}" ng-click="endClock($index)" ng-class="{on:task.clockStatus != '計測中...'}">suspend</button>
               </td>
               <td>
                 <span class="status text-info">{{task.clockStatus}}</span>
