@@ -2,10 +2,6 @@
     visibility: hidden;
 }
 
-.end-true {
-    visibility: hidden;
-}
-
 button.on {
     display: none;
 }
