@@ -31,7 +31,6 @@
               <th class="col-md-1">done</th>
               <th class="col-md-6">body</th>
               <th class="col-md-1"></th>
-              <th class="col-md-1"></th>
               <th class="col-md-1">status</th>
               <th class="col-md-1">elapsed(min)</th>
               <th class="col-md-1"></th>
@@ -46,10 +45,8 @@
                 <span class="body">{{task.body}}</span>
               </td>
               <td>
-                <button class="start btn btn-primary start-{{task.done}}" ng-click="startClock($index)">start</button>
-              </td>
-              <td>
-                <button class="end btn btn-warning end-{{task.done}}" ng-click="endClock($index)">end</button>
+                <button class="start btn btn-primary start-{{task.done}}" ng-click="startClock($index)" ng-class="{on:task.clockStatus}">start</button>
+                <button class="suspend btn btn-warning suspend-{{task.done}}" ng-click="endClock($index)" ng-class="{on:!task.clockStatus}">suspend</button>
               </td>
               <td>
                 <span class="status text-info">{{task.clockStatus}}</span>
