@@ -22,11 +22,11 @@ describe("taskStorage", function() {
   });
 });
 
-describe('PhoneListCtrl', function(){
+describe('mainCtrl', function(){
   beforeEach(module('tinoneApp'));
-  it('should create "phones" model with 3 phones', inject(function($controller) {
-    var scope = {},
-        ctrl = $controller('mainCtrl', {$scope:scope});
+  it('should have empty tasks', inject(function($controller) {
+    var scope = {};
+    $controller('mainCtrl', {$scope: scope});
     expect(scope.tasks.length).toBe(0);
   }));
 });
