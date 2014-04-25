@@ -7,29 +7,29 @@
   this.elapsed = 0;
 }
 
-function taskStorage() {
-}
-
-taskStorage.initialize = function(scope) {
-  this.storage = localStorage;
-  this.tasks = [];
-  if(!this.storage.getItem("items")) {
-    this.storage.setItem("items", JSON.stringify([]));
-  } else {
-    var tasks = JSON.parse(this.storage.getItem("items"));
-    this.tasks = tasks;
-  }
-  return this.tasks;
-};
-
-taskStorage.sync = function(scope) {
-  this.tasks = scope.tasks;
-  this.storage.setItem("items", JSON.stringify(this.tasks));
-};
-
 var tinoneApp = angular.module('tinoneApp', []);
-tinoneApp.controller('mainCtrl', function ($scope) {
-  $scope.tasks = taskStorage.initialize($scope);
+
+tinoneApp.factory('taskStorage', function(){
+  var storage = localStorage;
+  var tasks = [];
+  if(!storage.getItem("items")) {
+    storage.setItem("items", JSON.stringify([]));
+  } else {
+    tasks = JSON.parse(storage.getItem("items"));
+  }
+
+  return {
+    tasks: tasks,
+    sync: function(scope) {
+      tasks = scope.tasks;
+      storage.setItem("items", JSON.stringify(tasks));
+    }
+  }
+});
+
+
+tinoneApp.controller('mainCtrl', function ($scope, taskStorage) {
+  $scope.tasks = taskStorage.tasks;
 
   $scope.addNew = function() {
     var newTask = new Task($scope.newTaskBody);
