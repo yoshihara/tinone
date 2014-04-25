@@ -90,7 +90,7 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage) {
         if (!task.done) $scope.tasks.push(task);
       });
       taskStorage.sync($scope);
-    };
+    }
   };
 
   $scope.getDoneTasks = function() {
