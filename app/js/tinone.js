@@ -1,13 +1,22 @@
-﻿function Task(body) {
-  this.body = body;
-  this.done = false;
-  this.startTime = undefined;
-  this.endTime = undefined;
-  this.clockStatus = "";
-  this.elapsed = 0;
-}
+﻿var tinoneApp = angular.module('tinoneApp', []);
 
-var tinoneApp = angular.module('tinoneApp', []);
+tinoneApp.factory('Task', function () {
+  function Task(body) {
+    if(body){
+      this.body = body;
+    }
+  }
+
+  Task.prototype = {
+    body: '',
+    done: false,
+    startTime: undefined,
+    endTime: undefined,
+    clockStatus: "",
+    elapsed: 0
+  };
+  return Task;
+});
 
 tinoneApp.factory('taskStorage', function(){
   var storage = localStorage;
@@ -28,7 +37,7 @@ tinoneApp.factory('taskStorage', function(){
 });
 
 
-tinoneApp.controller('mainCtrl', function ($scope, taskStorage) {
+tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
   $scope.tasks = taskStorage.tasks;
 
   $scope.addNew = function() {
