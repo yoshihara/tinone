@@ -1,4 +1,10 @@
 describe("Task", function() {
+  var Task;
+  beforeEach(module('tinoneApp'));
+  beforeEach(inject(function(_Task_){
+    Task = _Task_;
+  }));
+
   it("should be defined", function () {
     expect(Task).toBeDefined();
   });
