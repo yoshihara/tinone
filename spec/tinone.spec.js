@@ -5,16 +5,17 @@ describe("Task", function() {
 });
 
 describe("taskStorage", function() {
+  var taskStorage;
+  beforeEach(module('tinoneApp'));
+  beforeEach(inject(function(_taskStorage_){
+    taskStorage = _taskStorage_;
+  }));
+
   it("should be defined", function () {
     expect(taskStorage).toBeDefined();
   });
 
   describe("initialize", function() {
-    beforeEach(function() {
-      var scope = [];
-      taskStorage.initialize(scope);
-    });
-
     it("should set [] to tasks", function() {
       expect(taskStorage.tasks.length).toBe(0);
     });
