@@ -1,35 +1,44 @@
-﻿function Task(body) {
-  this.body = body;
-  this.done = false;
-  this.startTime = undefined;
-  this.endTime = undefined;
-  this.clockStatus = "";
-  this.elapsed = 0;
-}
+﻿var tinoneApp = angular.module('tinoneApp', []);
 
-function taskStorage() {
-}
-
-taskStorage.initialize = function(scope) {
-  this.storage = localStorage;
-  this.tasks = [];
-  if(!this.storage.getItem("items")) {
-    this.storage.setItem("items", JSON.stringify([]));
-  } else {
-    var tasks = JSON.parse(this.storage.getItem("items"));
-    this.tasks = tasks;
+tinoneApp.factory('Task', function () {
+  function Task(body) {
+    if(body){
+      this.body = body;
+    }
   }
-  return this.tasks;
-};
 
-taskStorage.sync = function(scope) {
-  this.tasks = scope.tasks;
-  this.storage.setItem("items", JSON.stringify(this.tasks));
-};
+  Task.prototype = {
+    body: '',
+    done: false,
+    startTime: undefined,
+    endTime: undefined,
+    clockStatus: "",
+    elapsed: 0
+  };
+  return Task;
+});
 
-var tinoneApp = angular.module('tinoneApp', []);
-tinoneApp.controller('mainCtrl', function ($scope) {
-  $scope.tasks = taskStorage.initialize($scope);
+tinoneApp.factory('taskStorage', function(){
+  var storage = localStorage;
+  var tasks = [];
+  if(!storage.getItem("items")) {
+    storage.setItem("items", JSON.stringify([]));
+  } else {
+    tasks = JSON.parse(storage.getItem("items"));
+  }
+
+  return {
+    tasks: tasks,
+    sync: function(scope) {
+      tasks = scope.tasks;
+      storage.setItem("items", JSON.stringify(tasks));
+    }
+  }
+});
+
+
+tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
+  $scope.tasks = taskStorage.tasks;
 
   $scope.addNew = function() {
     var newTask = new Task($scope.newTaskBody);
@@ -90,7 +99,7 @@ tinoneApp.controller('mainCtrl', function ($scope) {
         if (!task.done) $scope.tasks.push(task);
       });
       taskStorage.sync($scope);
-    };
+    }
   };
 
   $scope.getDoneTasks = function() {
