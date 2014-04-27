@@ -15,6 +15,7 @@ tinoneApp.factory('Task', function () {
   }
 
   Task.prototype.isMeasuring = function() {
+    // TODO: できれば日本語文字列ではなく、doingのように英単語にしたい（その英単語を見て表示する文字列を変える）そしてタスクの背景に色をつけて計測中かどうかを判断できたらベスト
     return this.clockStatus == "計測中...";
   }
 
@@ -68,8 +69,7 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
 
   $scope.doneTask = function(index) {
     var task = $scope.tasks[index];
-    // TODO: できれば日本語文字列ではなく、doingのように英単語にしたい（その英単語を見て表示する文字列を変える）そしてタスクの背景に色をつけて計測中かどうかを判断できたらベスト
-    if(task.clockStatus == "計測中...") this.endClock(index);
+    if(task.isMeasuring()) this.endClock(index);
     task.done = !task.done; // TODO: checkedを見たほうがいい
     if(task.done == true) {
         task.clockStatus = "終了";
