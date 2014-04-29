@@ -1,10 +1,8 @@
 ﻿var tinoneApp = angular.module('tinoneApp', []);
 
 tinoneApp.factory('Task', function () {
-  function Task(body) {
-    if(body){
-      this.body = body;
-    }
+  function Task(params) {
+    $.extend(this, params)
   }
 
   Task.prototype = {
@@ -14,17 +12,24 @@ tinoneApp.factory('Task', function () {
     endTime: undefined,
     clockStatus: "",
     elapsed: 0
-  };
+  }
+
+  Task.prototype.isMeasuring = function() {
+    // TODO: できれば日本語文字列ではなく、doingのように英単語にしたい（その英単語を見て表示する文字列を変える）そしてタスクの背景に色をつけて計測中かどうかを判断できたらベスト
+    return this.clockStatus == "計測中...";
+  }
+
   return Task;
 });
 
-tinoneApp.factory('taskStorage', function(){
+tinoneApp.factory('taskStorage', function(Task){
   var storage = localStorage;
   var tasks = [];
   if(!storage.getItem("items")) {
     storage.setItem("items", JSON.stringify([]));
   } else {
-    tasks = JSON.parse(storage.getItem("items"));
+    all_params = JSON.parse(storage.getItem("items"));
+    tasks = all_params.map(function(params) { return new Task(params); });
   }
 
   return {
@@ -41,7 +46,7 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
   $scope.tasks = taskStorage.tasks;
 
   $scope.addNew = function() {
-    var newTask = new Task($scope.newTaskBody);
+    var newTask = new Task({ body: $scope.newTaskBody });
     $scope.tasks.push(newTask);
     taskStorage.sync($scope);
     $scope.newTaskBody = "";
@@ -64,8 +69,7 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
 
   $scope.doneTask = function(index) {
     var task = $scope.tasks[index];
-    // TODO: できれば日本語文字列ではなく、doingのように英単語にしたい（その英単語を見て表示する文字列を変える）そしてタスクの背景に色をつけて計測中かどうかを判断できたらベスト
-    if(task.clockStatus == "計測中...") this.endClock(index);
+    if(task.isMeasuring()) this.endClock(index);
     task.done = !task.done; // TODO: checkedを見たほうがいい
     if(task.done == true) {
         task.clockStatus = "終了";
