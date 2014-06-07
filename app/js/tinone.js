@@ -28,7 +28,7 @@ tinoneApp.factory('taskStorage', function(Task){
   if(!storage.getItem("items")) {
     storage.setItem("items", JSON.stringify([]));
   } else {
-    all_params = JSON.parse(storage.getItem("items"));
+    var all_params = JSON.parse(storage.getItem("items"));
     tasks = all_params.map(function(params) { return new Task(params); });
   }
   // tasks = tasks.sort(function(t1, t2) {
