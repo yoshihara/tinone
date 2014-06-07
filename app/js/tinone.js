@@ -1,4 +1,4 @@
-﻿var tinoneApp = angular.module('tinoneApp', []);
+﻿var tinoneApp = angular.module('tinoneApp', ['ui.sortable']);
 
 tinoneApp.factory('Task', function () {
   function Task(params) {
@@ -31,6 +31,9 @@ tinoneApp.factory('taskStorage', function(Task){
     all_params = JSON.parse(storage.getItem("items"));
     tasks = all_params.map(function(params) { return new Task(params); });
   }
+  // tasks = tasks.sort(function(t1, t2) {
+  //   return t1.position - t2.position;
+  // });
 
   return {
     tasks: tasks,
@@ -44,6 +47,12 @@ tinoneApp.factory('taskStorage', function(Task){
 
 tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
   $scope.tasks = taskStorage.tasks;
+
+  $scope.sortableOptions = {
+    stop: function(e, ui) {
+      taskStorage.sync($scope);
+    }
+  };
 
   $scope.addNew = function() {
     var newTask = new Task({ body: $scope.newTaskBody });

@@ -2,8 +2,10 @@
 <html lang="ja" ng-app="tinoneApp">
   <head>
     <meta charset="utf-8">
-    <script type="text/javascript" src="lib/angular-1.2.9.min.js"></script>
     <script type="text/javascript" src="lib/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui-1.10.4.min.js"></script>
+    <script type="text/javascript" src="lib/angular-1.2.9.min.js"></script>
+    <script type="text/javascript" src="lib/sortable.js"></script>
     <script type="text/javascript" src="js/tinone.js"></script>
 
     <link rel="stylesheet" href="lib/bootstrap-3.1.1.min.css">
@@ -36,8 +38,8 @@
               <th class="col-md-1"></th>
             </tr>
           </thead>
-          <tbody>
-            <tr ng-repeat="task in tasks track by $index" class={{task.statusClass()}}>
+          <tbody ui-sortable="sortableOptions" ng-model="tasks">
+            <tr ng-repeat="task in tasks track by $index" class="task{{task.statusClass()}}">
               <td>
                 <input type="checkbox" ng-model="task.done" ng-click="doneTask($index)"/>
               </td>
