@@ -29,14 +29,18 @@ tinoneApp.factory('taskStorage', function(Task){
     storage.setItem("items", JSON.stringify([]));
   } else {
     var allParams = JSON.parse(storage.getItem("items"));
-    tasks = allParams.map(function(params) { return new Task(params); });
+    tasks = allParams.map(function(params) {
+      if(params.position == undefined) params.position = 0;
+      return new Task(params);
+    });
   }
-  // tasks = tasks.sort(function(t1, t2) {
-  //   return t1.position - t2.position;
-  // });
+
+  tasks = tasks.sort(function(t1, t2) {
+    return t1.position - t2.position;
+  });
 
   return {
-    tasks: tasks,
+    tasks: tasks.sort(),
     sync: function(scope) {
       tasks = scope.tasks;
       storage.setItem("items", JSON.stringify(tasks));
@@ -49,13 +53,45 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
   $scope.tasks = taskStorage.tasks;
 
   $scope.sortableOptions = {
+    start: function(e, ui){
+      ui.item.startPos = ui.item.index();
+      ui.item.task = $scope.tasks[ui.item.index()];
+    },
     stop: function(e, ui) {
+      var fromIndex = ui.item.startPos;
+      var toIndex = ui.item.sortable.dropindex;
+      var task = ui.item.task;
+
+      if(toIndex == undefined) {
+        ui.item.sortable.cancel();
+        return;
+      }
+      task.position = toIndex;
+
+      var start;
+      var end;
+      var direction;
+
+      if(fromIndex < toIndex){
+        start = fromIndex;
+        end = toIndex;
+        direction = -1;
+      }
+      else {
+        start = toIndex + 1;
+        end = fromIndex + 1;
+        direction = 1;
+      }
+      angular.forEach($scope.tasks.slice(start, end),
+                      function(task, i){
+                        task.position = task.position + direction;
+                      });
       taskStorage.sync($scope);
     }
   };
 
   $scope.addNew = function() {
-    var newTask = new Task({ body: $scope.newTaskBody });
+    var newTask = new Task({ body: $scope.newTaskBody, position: $scope.tasks.length });
     $scope.tasks.push(newTask);
     taskStorage.sync($scope);
     $scope.newTaskBody = "";
