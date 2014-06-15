@@ -2,7 +2,7 @@
 
 tinoneApp.factory('Task', function () {
   function Task(params) {
-    $.extend(this, params)
+    $.extend(this, params);
   }
 
   Task.prototype = {
@@ -12,12 +12,12 @@ tinoneApp.factory('Task', function () {
     endTime: undefined,
     clockStatus: "",
     elapsed: 0
-  }
+  };
 
   Task.prototype.isMeasuring = function() {
     // TODO: できれば日本語文字列ではなく、doingのように英単語にしたい（その英単語を見て表示する文字列を変える）そしてタスクの背景に色をつけて計測中かどうかを判断できたらベスト
     return this.clockStatus == "計測中...";
-  }
+  };
 
   return Task;
 });
@@ -45,7 +45,7 @@ tinoneApp.factory('taskStorage', function(Task){
       tasks = scope.tasks;
       storage.setItem("items", JSON.stringify(tasks));
     }
-  }
+  };
 });
 
 
