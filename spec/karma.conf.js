@@ -17,6 +17,9 @@ module.exports = function(config) {
     files: [
       "app/lib/angular-1.2.9.min.js",
       "spec/angular-mocks.js",
+      "app/lib/jquery-2.1.0.min.js",
+      "app/lib/jquery-ui-1.10.4.min.js",
+      "app/lib/sortable.js",
       "app/js/tinone.js",
       "spec/tinone.spec.js"
     ],
