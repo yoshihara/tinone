@@ -19,6 +19,12 @@ tinoneApp.factory('Task', function () {
     return this.clockStatus == "計測中...";
   };
 
+  Task.prototype.roundedElapsed = function() {
+    var elapsed = this.elapsed;
+    elapsed += (this.endTime - this.startTime) / 1000 / 60 / 60;
+    return Math.round(elapsed * 100) / 100; // 小数第3位で四捨五入している
+  };
+
   return Task;
 });
 
@@ -107,7 +113,7 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
     var task = $scope.tasks[index];
     task.endTime = Date.now();
     if(task.elapsed == undefined) task.elapsed = 0;
-    task.elapsed += (task.endTime - task.startTime) / 1000 / 60;
+    task.elapsed = task.roundedElapsed();
     task.clockStatus = "";
     taskStorage.sync($scope);
   };
