@@ -31,15 +31,14 @@
           <thead>
             <tr>
               <th class="col-md-1">done</th>
-              <th class="col-md-7">body</th>
+              <th class="col-md-8">body</th>
               <th class="col-md-1"></th>
-              <th class="col-md-1">status</th>
               <th class="col-md-1">elapsed(hour)</th>
               <th class="col-md-1"></th>
             </tr>
           </thead>
           <tbody ui-sortable="sortableOptions" ng-model="tasks">
-            <tr ng-repeat="task in tasks track by $index" class="task{{task.statusClass()}}">
+            <tr ng-repeat="task in tasks track by $index" class="task{{task.statusClass()}}" ng-class="{done: task.done}">
               <td>
                 <input type="checkbox" ng-model="task.done" ng-click="doneTask($index)"/>
               </td>
@@ -49,9 +48,6 @@
               <td>
                 <button class="start btn btn-primary start-{{task.done}}" ng-click="startClock($index)" ng-class="{on:task.isMeasuring()}">start</button>
                 <button class="suspend btn btn-warning" ng-click="endClock($index)" ng-class="{on:!task.isMeasuring()}">suspend</button>
-              </td>
-              <td>
-                <span class="status text-info">{{task.clockStatus}}</span>
               </td>
               <td>
                 <span class="elapsed text-info">{{task.elapsed}}</span>

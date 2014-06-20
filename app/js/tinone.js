@@ -10,13 +10,13 @@ tinoneApp.factory('Task', function () {
     done: false,
     startTime: undefined,
     endTime: undefined,
-    clockStatus: "",
+    running: false,
     elapsed: 0
   };
 
   Task.prototype.isMeasuring = function() {
     // TODO: できれば日本語文字列ではなく、doingのように英単語にしたい（その英単語を見て表示する文字列を変える）そしてタスクの背景に色をつけて計測中かどうかを判断できたらベスト
-    return this.clockStatus == "計測中...";
+    return this.running ;
   };
 
   Task.prototype.roundedElapsed = function() {
@@ -105,7 +105,7 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
 
   $scope.startClock = function(index) {
     $scope.tasks[index].startTime = Date.now();
-    $scope.tasks[index].clockStatus = "計測中...";
+    $scope.tasks[index].running = true;
     taskStorage.sync($scope);
   };
 
@@ -114,7 +114,7 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
     task.endTime = Date.now();
     if(task.elapsed == undefined) task.elapsed = 0;
     task.elapsed = task.roundedElapsed();
-    task.clockStatus = "";
+    task.running = false;
     taskStorage.sync($scope);
   };
 
@@ -122,11 +122,9 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
     var task = $scope.tasks[index];
     if(task.isMeasuring()) this.endClock(index);
     task.done = !task.done; // TODO: checkedを見たほうがいい
+    task.running = false;
     if(task.done == true) {
-        task.clockStatus = "終了";
         task.endTime = Date.now();
-    } else {
-        task.clockStatus = "";
     }
     taskStorage.sync($scope);
   };

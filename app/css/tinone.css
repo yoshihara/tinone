@@ -5,3 +5,7 @@
 button.on {
     display: none;
 }
+
+tr.done {
+    background-color: #CCCCCC;
+}
