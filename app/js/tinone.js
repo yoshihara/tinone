@@ -97,7 +97,11 @@ tinoneApp.controller('mainCtrl', function ($scope, taskStorage, Task) {
   };
 
   $scope.addNew = function() {
-    var newTask = new Task({ body: $scope.newTaskBody, position: $scope.tasks.length });
+    var body = $scope.newTaskBody;
+    if(body == "" || body == null) {
+      return
+    };
+    var newTask = new Task({ body: body, position: $scope.tasks.length });
     $scope.tasks.push(newTask);
     taskStorage.sync($scope);
     $scope.newTaskBody = "";
